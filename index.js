@@ -61,26 +61,26 @@ var mapper = function (request, callback) {
 server.route({
     method: 'GET',
     path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper }
+    handler: { proxy: { mapUri: mapper, passThrough: true }
     }
 });
 
 server.route({
     method: 'PUT',
     path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper }}
+    handler: { proxy: { mapUri: mapper, passThrough: true }}
 });
 
 server.route({
     method: 'DELETE',
     path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper }}
+    handler: { proxy: { mapUri: mapper, passThrough: true }}
 });
 
 server.route({
     method: 'POST',
     path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper }}
+    handler: { proxy: { mapUri: mapper, passThrough: true }}
 });
 
 server.route({
