@@ -6,9 +6,9 @@ An example local config is included. Just remove the `.example`. This file is me
 
 ## Install
 ### Globally
-`npm install -g rv-ember-server`
+`npm install -g rv-ember-server-proxy`
 ### Project
-`npm install rv-ember-server --save`
+`npm install rv-ember-server-proxy --save`
 
 ## Run
 ### Globally
