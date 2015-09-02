@@ -1,6 +1,6 @@
 {
   "name": "rv-ember-server-proxy",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Simple HapiJS Server that sits in-front of ember.",
   "main": "index.js",
   "scripts": {
