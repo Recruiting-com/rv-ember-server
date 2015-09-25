@@ -3,6 +3,7 @@
     "cookie": "secret",
     "ApiVersion": "",
     "ApiDomain": "",
+    "ApiStagingDomain": "",
     "secret": "",
     "apiKey": "",
     "apiServer": "https://google.com/",

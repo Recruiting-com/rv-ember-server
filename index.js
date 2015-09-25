@@ -52,35 +52,49 @@ server.route({
 //API Proxy
 var mapper = function (request, callback) {
     var search = '';
+    var domain = Conf.get('ApiDomain');
     if (request.url.search){
         search = request.url.search;
     }
-    callback(null, 'https://' + Conf.get('ApiDomain') + '/' + request.params.p + search);
+    callback(null, 'https://' + domain + '/' + request.params.p + search);
+};
+
+//API-staging Proxy
+var stagingMapper = function (request, callback) {
+    var search = '';
+    var stagingDomain = Conf.get('ApiStagingDomain');
+    if (request.url.search){
+        search = request.url.search;
+    }
+    callback(null, 'https://' + stagingDomain + '/' + request.params.p + search);
+};
+
+//API-staging Proxy
+var proxyMapper = function (request, callback) {
+    var search = '';
+    if (request.url.search){
+        search = request.url.search;
+    }
+    callback(null, request.params.p + search);
 };
 
 server.route({
-    method: 'GET',
+    method: ['GET', 'PUT', 'POST', 'DELETE'],
     path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper, passThrough: true }
+    handler: { proxy: { mapUri: mapper, passThrough: true }}
+});
+
+server.route({
+    method: ['GET', 'PUT', 'POST', 'DELETE'],
+    path: '/api-staging/{p*}',
+    handler: { proxy: { mapUri: stagingMapper, passThrough: true }
     }
 });
 
 server.route({
-    method: 'PUT',
-    path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper, passThrough: true }}
-});
-
-server.route({
-    method: 'DELETE',
-    path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper, passThrough: true }}
-});
-
-server.route({
-    method: 'POST',
-    path: '/api/{p*}',
-    handler: { proxy: { mapUri: mapper, passThrough: true }}
+    method: ['GET', 'PUT', 'POST', 'DELETE'],
+    path: '/proxy/{p*}',
+    handler: { proxy: { mapUri: proxyMapper, passThrough: true }}
 });
 
 server.route({
