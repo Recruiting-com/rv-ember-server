@@ -53,20 +53,22 @@ server.route({
 var mapper = function (request, callback) {
     var search = '';
     var domain = Conf.get('ApiDomain');
+    var protocol = Conf.get('protocol');
     if (request.url.search){
         search = request.url.search;
     }
-    callback(null, 'https://' + domain + '/' + request.params.p + search);
+    callback(null, protocol + '://' + domain + '/' + request.params.p + search);
 };
 
 //API-staging Proxy
 var stagingMapper = function (request, callback) {
     var search = '';
     var stagingDomain = Conf.get('ApiStagingDomain');
+    var protocol = Conf.get('protocol');
     if (request.url.search){
         search = request.url.search;
     }
-    callback(null, 'https://' + stagingDomain + '/' + request.params.p + search);
+    callback(null, protocol + '://' + stagingDomain + '/' + request.params.p + search);
 };
 
 //API-staging Proxy

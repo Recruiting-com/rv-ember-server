@@ -14,4 +14,4 @@ An example local config is included. Just remove the `.example`. This file is me
 ### Globally
 `rv-serve`
 ### Project
-`./node_modules/rv-ember-server/bin/server`
+`./node_modules/rv-ember-server-proxy/bin/server`
