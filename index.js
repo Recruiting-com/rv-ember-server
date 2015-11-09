@@ -23,18 +23,6 @@ server.views({
 
 server.connection({ port: Conf.get('port')});
 
-server.state('authToken', {
-    ttl: null,
-    clearInvalid: false, // remove invalid cookies
-    strictHeader: true // don't allow violations of RFC 6265
-});
-
-server.state('apiKey', {
-    ttl: null,
-    clearInvalid: false, // remove invalid cookies
-    strictHeader: true // don't allow violations of RFC 6265
-});
-
 server.route({
     path: '/public/{p*}',
     method: 'GET',
@@ -103,10 +91,18 @@ server.route({
     path: '/{p*}',
     method: 'GET',
     handler: function(request, reply){
+        
         var authObj = Auth.getAuthToken();
+
+        var timestamp = authObj.apiTimeStamp;
         var token = authObj.shaSecret;
-        var apiTimeStamp = authObj.apiTimeStamp;
-        reply.view('index').state('authToken', token).state('apiKey', Auth.getApiKey()).state('apiTimeStamp', apiTimeStamp);
+        var key = Auth.getApiKey();
+
+        reply.view('index', {
+            api_timestamp: timestamp,
+            api_token: token,
+            api_key: key
+        });
     }
 });
 
