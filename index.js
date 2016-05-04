@@ -4,6 +4,7 @@ var Hapi = require('hapi');
 var Path = require('path');
 var Auth = require('./lib/auth');
 var Conf = require('./lib/conf');
+var logger = require('./lib/logger');
 
 var cacheConfig = {
   cache: {
@@ -12,7 +13,14 @@ var cacheConfig = {
   }
 };
 
-var server = new Hapi.Server();
+var server = new Hapi.Server({
+    connections: {
+        state: {
+            ignoreErrors: true
+        }
+    }
+});
+
 
 server.views({
     engines: {
@@ -22,6 +30,26 @@ server.views({
 });
 
 server.connection({ port: Conf.get('port')});
+
+server.ext('onPreResponse', function(request, reply) {
+  var response = request.response;
+
+  if (response.isBoom) {
+    var error_data = {
+        status_code: response.output.statusCode ,
+        timestamp: new Date(),
+        message: response.output.payload.message,
+        request_url: request.url,
+        headers: request.headers
+    };
+    logger.error(error_data);
+    return reply.redirect('/?error=server_error&timestamp=' + encodeURIComponent(new Date()));
+  } else {
+    logger.info(new Date(), request.url.href);
+    return reply.continue();
+  }
+
+});
 
 server.route({
     path: '/public/{p*}',
